@@ -1,0 +1,99 @@
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
+from app.database.database import create_tables
+from app.routes import marca_vehiculo, persona, vehiculo
+
+# Crear la aplicación FastAPI
+app = FastAPI(
+    title="API de Gestión de Vehículos - ICANH",
+    description="""
+    API RESTful para la gestión de vehículos, marcas, personas y sus relaciones.
+
+    ## Características principales:
+
+    - **Gestión de Marcas de Vehículo**: CRUD completo para marcas con validación de unicidad
+    - **Gestión de Personas**: CRUD completo para personas con validación de cédula única
+    - **Gestión de Vehículos**: CRUD completo con relación a marcas
+    - **Relaciones Many-to-Many**: Gestión de propietarios de vehículos
+
+    ## Endpoints disponibles:
+
+    ### Marcas de Vehículo
+    - `GET /api/marcas-vehiculo/` - Listar todas las marcas
+    - `POST /api/marcas-vehiculo/` - Crear nueva marca
+    - `GET /api/marcas-vehiculo/{id}` - Obtener marca por ID
+    - `PUT /api/marcas-vehiculo/{id}` - Actualizar marca
+    - `DELETE /api/marcas-vehiculo/{id}` - Eliminar marca
+
+    ### Personas
+    - `GET /api/personas/` - Listar todas las personas
+    - `POST /api/personas/` - Crear nueva persona
+    - `GET /api/personas/{id}` - Obtener persona por ID
+    - `PUT /api/personas/{id}` - Actualizar persona
+    - `DELETE /api/personas/{id}` - Eliminar persona
+    - `GET /api/personas/{id}/vehiculos/` - Obtener vehículos de una persona
+
+    ### Vehículos
+    - `GET /api/vehiculos/` - Listar todos los vehículos
+    - `POST /api/vehiculos/` - Crear nuevo vehículo
+    - `GET /api/vehiculos/{id}` - Obtener vehículo por ID
+    - `PUT /api/vehiculos/{id}` - Actualizar vehículo
+    - `DELETE /api/vehiculos/{id}` - Eliminar vehículo
+    - `GET /api/vehiculos/{id}/propietarios/` - Obtener propietarios de un vehículo
+    - `POST /api/vehiculos/{id}/propietarios/` - Asignar propietario a vehículo
+    """,
+    version="1.0.0",
+    contact={
+        "name": "Instituto Colombiano de Antropología e Historia (ICANH)",
+        "email": "info@icanh.gov.co",
+    },
+    license_info={
+        "name": "MIT",
+    },
+)
+
+# Configurar CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # En producción, especificar los orígenes permitidos
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Incluir routers
+app.include_router(marca_vehiculo.router)
+app.include_router(persona.router)
+app.include_router(vehiculo.router)
+
+
+@app.on_event("startup")
+def startup_event():
+    """Crear las tablas de la base de datos al iniciar la aplicación"""
+    create_tables()
+
+
+@app.get("/", summary="Bienvenida", tags=["General"])
+def read_root():
+    """
+    Endpoint de bienvenida de la API.
+
+    Retorna información básica sobre la API.
+    """
+    return {
+        "message": "Bienvenido a la API de Gestión de Vehículos - ICANH",
+        "version": "1.0.0",
+        "documentation": "/docs",
+        "redoc": "/redoc"
+    }
+
+
+@app.get("/health", summary="Health Check", tags=["General"])
+def health_check():
+    """
+    Endpoint para verificar el estado de la API.
+
+    Retorna el estado actual del servicio.
+    """
+    return {"status": "healthy", "message": "API funcionando correctamente"}
