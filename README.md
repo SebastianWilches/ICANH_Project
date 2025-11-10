@@ -73,8 +73,10 @@ ICANH_Project/
 
 ## 📋 Requisitos
 
-- Python 3.8+
-- pip (gestor de paquetes de Python)
+- **Python 3.8+** (probado con Python 3.13.7 en Windows)
+- **pip** (gestor de paquetes de Python)
+
+> **Nota**: Las versiones de las dependencias están optimizadas para compatibilidad con Python 3.13 en Windows, incluyendo wheels precompilados para evitar problemas de compilación con Rust.
 
 ## 🛠️ Instalación y Configuración
 
@@ -368,11 +370,12 @@ uvicorn main:app --host 0.0.0.0 --port 8080 --reload
 ## 📖 Documentación Técnica
 
 ### Dependencias Principales
-- **FastAPI**: Framework web moderno y rápido
-- **SQLAlchemy**: ORM para Python
-- **Pydantic**: Validación de datos
-- **Uvicorn**: Servidor ASGI
-- **python-dotenv**: Gestión de variables de entorno
+- **FastAPI 0.112.4**: Framework web moderno y rápido
+- **SQLAlchemy 2.0.31**: ORM para Python
+- **Pydantic 2.8.2**: Validación de datos
+- **Uvicorn 0.30.6**: Servidor ASGI
+- **python-dotenv 1.0.1**: Gestión de variables de entorno
+- **Alembic 1.13.2**: Migraciones de base de datos
 
 ### Arquitectura
 - **Routers modularizados** por entidad
