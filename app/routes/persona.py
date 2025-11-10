@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session, joinedload
 from typing import List
 
 from ..database.database import get_db
-from ..models.models import Persona as PersonaModel
+from ..models.models import Persona as PersonaModel, Vehiculo
 from ..schemas.schemas import (
     Persona,
     PersonaCreate,
@@ -160,7 +160,7 @@ def read_persona_vehiculos(
     - **persona_id**: ID de la persona
     """
     db_persona = db.query(PersonaModel).options(
-        joinedload(PersonaModel.vehiculos).joinedload('marca')
+        joinedload(PersonaModel.vehiculos).joinedload(Vehiculo.marca)
     ).filter(PersonaModel.id == persona_id).first()
     if db_persona is None:
         raise HTTPException(status_code=404, detail="Persona no encontrada")
