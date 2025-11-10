@@ -169,3 +169,6 @@ test_*.db
 .coverage.*
 coverage.xml
 .pytest_cache
+
+# Docker
+data/vehiculos.db

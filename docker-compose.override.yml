@@ -1,0 +1,16 @@
+# Archivo de override para desarrollo
+# Este archivo se combina automáticamente con docker-compose.yml
+
+version: '3.8'
+
+services:
+  icanh-api:
+    # Montar el código fuente para desarrollo
+    volumes:
+      - .:/app
+      - ./data:/app/data
+    environment:
+      - RELOAD=True
+      - ENVIRONMENT=development
+    # Comando para desarrollo con recarga automática
+    command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]

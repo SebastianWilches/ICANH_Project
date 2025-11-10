@@ -50,8 +50,8 @@ app = FastAPI(
     """),
     version=os.getenv("APP_VERSION", "1.0.0"),
     contact={
-        "name": os.getenv("APP_CONTACT_NAME", "Instituto Colombiano de Antropología e Historia (ICANH)"),
-        "email": os.getenv("APP_CONTACT_EMAIL", "info@icanh.gov.co"),
+        "name": os.getenv("APP_CONTACT_NAME", "Jhoan Sebastian Wilches Jimenez"),
+        "email": os.getenv("APP_CONTACT_EMAIL", "sebastianwilches2@gmail.com"),
     },
     license_info={
         "name": "MIT",
