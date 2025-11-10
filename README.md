@@ -11,6 +11,7 @@ API RESTful desarrollada con FastAPI y SQLite para la gestión de vehículos, ma
 - **Documentación**: Swagger UI automática
 - **Colección Postman**: Incluida para testing
 - **Testing Automatizado**: 65 tests con 94% cobertura
+- **Contenerización**: Docker + Docker Compose
 - **Arquitectura**: Modular y escalable
 
 ## 📊 Diagrama de Base de Datos
@@ -389,6 +390,141 @@ python run.py
 
 **Nota**: Al reiniciar la aplicación, SQLAlchemy detecta que las tablas no existen y las crea automáticamente gracias al evento `startup` en `main.py`.
 
+## 🐳 Docker - Contenerización
+
+La aplicación está completamente contenerizada con Docker para facilitar el despliegue y desarrollo.
+
+### 📋 Prerrequisitos
+
+- **Docker**: [Instalar Docker](https://docs.docker.com/get-docker/)
+- **Docker Compose**: Incluido con Docker Desktop
+
+### 🚀 Ejecutar con Docker Compose
+
+#### Para Producción:
+```bash
+# Construir y ejecutar
+docker-compose up --build
+
+# Ejecutar en segundo plano
+docker-compose up -d --build
+
+# Ver logs
+docker-compose logs -f
+
+# Detener
+docker-compose down
+```
+
+#### Para Desarrollo:
+```bash
+# Ejecutar en modo desarrollo (con recarga automática)
+docker-compose -f docker-compose.yml -f docker-compose.override.yml up --build
+
+# O simplemente (docker-compose.override.yml se carga automáticamente)
+docker-compose up --build
+```
+
+### 🏗️ Archivos Docker
+
+- **`Dockerfile`**: Imagen de la aplicación Python
+- **`docker-compose.yml`**: Configuración de producción
+- **`docker-compose.override.yml`**: Configuración de desarrollo
+- **`.dockerignore`**: Optimización de construcción
+
+### 🌐 Acceder a la Aplicación
+
+Una vez ejecutándose:
+
+- **API**: `http://localhost:8000`
+- **Documentación Swagger**: `http://localhost:8000/docs`
+- **Documentación ReDoc**: `http://localhost:8000/redoc`
+- **Health Check**: `http://localhost:8000/health`
+
+### 💾 Persistencia de Datos
+
+La base de datos SQLite se persiste en el directorio `data/` del proyecto:
+
+```
+data/
+└── vehiculos.db  # Base de datos SQLite
+```
+
+### 🔧 Comandos Útiles de Docker
+
+```bash
+# Ver servicios ejecutándose
+docker-compose ps
+
+# Ejecutar comandos en el contenedor
+docker-compose exec icanh-api bash
+
+# Ver logs en tiempo real
+docker-compose logs -f icanh-api
+
+# Reconstruir imagen
+docker-compose build --no-cache
+
+# Limpiar contenedores e imágenes
+docker-compose down --volumes --rmi all
+
+# Ejecutar tests dentro del contenedor
+docker-compose exec icanh-api python run_tests.py
+```
+
+### 🏭 Despliegue en Producción
+
+Para producción, usa solo `docker-compose.yml` sin el override:
+
+```bash
+# Producción (sin recarga automática)
+docker-compose up -d --build
+
+# Verificar health check
+curl http://localhost:8000/health
+```
+
+### 🔐 Variables de Entorno en Docker
+
+El contenedor usa estas variables de entorno:
+
+- `DATABASE_URL`: Ubicación de la base de datos
+- `HOST`/`PORT`: Configuración del servidor
+- `RELOAD`: Recarga automática (solo desarrollo)
+- `ENVIRONMENT`: Entorno de ejecución
+- Variables de aplicación (`APP_TITLE`, etc.)
+
+### 📊 Monitoreo
+
+El contenedor incluye health checks automáticos que verifican:
+- ✅ El servicio está ejecutándose
+- ✅ La aplicación responde correctamente
+- ✅ El endpoint `/health` funciona
+
+### 🐛 Troubleshooting
+
+#### Problema: Puerto 8000 ocupado
+```bash
+# Cambiar puerto en docker-compose.yml
+ports:
+  - "8080:8000"
+```
+
+#### Problema: Permisos en directorio data/
+```bash
+# Asegurar permisos
+sudo chown -R $USER:$USER data/
+```
+
+#### Problema: Contenedor no inicia
+```bash
+# Ver logs detallados
+docker-compose logs icanh-api
+
+# Verificar construcción
+docker-compose build --no-cache
+```
+
 ## 🐛 Problemas Conocidos y Soluciones
 
 ### Error en Endpoint `/api/personas/{id}/vehiculos`
@@ -569,8 +705,8 @@ Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más det
 ## 📞 Soporte
 
 Para soporte técnico o preguntas:
-- **Email**: soporte@icanh.gov.co
-- **Institución**: Instituto Colombiano de Antropología e Historia (ICANH)
+- **Email**: sebastianwilches2@gmail.com
+- **Dev**: Jhoan Sebastian Wilches Jimenez
 
 ---
 
