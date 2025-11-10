@@ -50,28 +50,28 @@ def main():
 
     # 2. Ejecutar tests unitarios
     success = run_command(
-        "pytest tests/test_models.py tests/test_schemas.py -v",
+        f"{sys.executable} -m pytest tests/test_models.py tests/test_schemas.py -v",
         "Ejecutando tests unitarios (Modelos y Esquemas)"
     )
 
     # 3. Ejecutar tests de rutas
     if success:
         success = run_command(
-            "pytest tests/test_routes.py -v",
+            f"{sys.executable} -m pytest tests/test_routes.py -v",
             "Ejecutando tests de rutas (Endpoints)"
         )
 
     # 4. Ejecutar tests de integración
     if success:
         success = run_command(
-            "pytest tests/test_integration.py -v",
+            f"{sys.executable} -m pytest tests/test_integration.py -v",
             "Ejecutando tests de integración"
         )
 
     # 5. Ejecutar todos los tests con cobertura
     if success:
         success = run_command(
-            "pytest --cov=app --cov-report=term-missing --cov-report=html",
+            f"{sys.executable} -m pytest --cov=app --cov-report=term-missing --cov-report=html",
             "Ejecutando cobertura completa"
         )
 

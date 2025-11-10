@@ -1,11 +1,11 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import List, Optional
 
 
 # Esquemas para MarcaVehiculo
 class MarcaVehiculoBase(BaseModel):
-    nombre_marca: str
-    pais: str
+    nombre_marca: str = Field(..., min_length=1, description="Nombre único de la marca")
+    pais: str = Field(..., min_length=1, description="País de origen de la marca")
 
 
 class MarcaVehiculoCreate(MarcaVehiculoBase):
@@ -26,8 +26,8 @@ class MarcaVehiculo(MarcaVehiculoBase):
 
 # Esquemas para Persona
 class PersonaBase(BaseModel):
-    nombre: str
-    cedula: str
+    nombre: str = Field(..., min_length=1, description="Nombre completo de la persona")
+    cedula: str = Field(..., min_length=1, description="Número de cédula único")
 
 
 class PersonaCreate(PersonaBase):
@@ -48,10 +48,10 @@ class Persona(PersonaBase):
 
 # Esquemas para Vehiculo
 class VehiculoBase(BaseModel):
-    modelo: str
-    marca_id: int
-    numero_puertas: int
-    color: str
+    modelo: str = Field(..., min_length=1, description="Modelo del vehículo")
+    marca_id: int = Field(..., gt=0, description="ID de la marca del vehículo")
+    numero_puertas: int = Field(..., ge=2, le=5, description="Número de puertas (2-5)")
+    color: str = Field(..., min_length=1, description="Color del vehículo")
 
 
 class VehiculoCreate(VehiculoBase):

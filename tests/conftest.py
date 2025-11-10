@@ -27,6 +27,15 @@ test_engine = create_engine(
     poolclass=StaticPool,
 )
 
+# Habilitar foreign keys en SQLite para tests
+from sqlalchemy import event
+
+@event.listens_for(test_engine, "connect")
+def set_sqlite_pragma(dbapi_connection, connection_record):
+    cursor = dbapi_connection.cursor()
+    cursor.execute("PRAGMA foreign_keys=ON")
+    cursor.close()
+
 # Crear SessionLocal para pruebas
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=test_engine)
 
@@ -61,6 +70,9 @@ def client():
     """Fixture que proporciona un cliente de pruebas para FastAPI"""
     from fastapi.testclient import TestClient
 
+    # Asegurar que las tablas estén creadas
+    Base.metadata.create_all(bind=test_engine)
+
     # Override the dependency to use the test database
     def override_get_db():
         session = TestingSessionLocal()
@@ -76,6 +88,9 @@ def client():
 
     # Limpiar overrides después del test
     main.app.dependency_overrides.clear()
+
+    # Limpiar tablas después del test
+    Base.metadata.drop_all(bind=test_engine)
 
 
 # Fixtures para crear datos de prueba

@@ -10,6 +10,7 @@ API RESTful desarrollada con FastAPI y SQLite para la gestión de vehículos, ma
 - **Validación**: Pydantic
 - **Documentación**: Swagger UI automática
 - **Colección Postman**: Incluida para testing
+- **Testing Automatizado**: 65 tests con 94% cobertura
 - **Arquitectura**: Modular y escalable
 
 ## 📊 Diagrama de Base de Datos
