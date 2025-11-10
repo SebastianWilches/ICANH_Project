@@ -1,0 +1,1718 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API de Gestión de Vehículos - ICANH",
+        "description": "API RESTful para la gestión de vehículos, marcas, personas y sus relaciones",
+        "contact": {
+            "name": "Jhoan Sebastian Wilches Jimenez",
+            "email": "sebastianwilches2@gmail.com"
+        },
+        "license": {
+            "name": "MIT"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000/api",
+            "description": "Servidor de desarrollo"
+        }
+    ],
+    "paths": {
+        "/": {
+            "get": {
+                "tags": [
+                    "General"
+                ],
+                "summary": "Bienvenida",
+                "operationId": "9cd9d15aeb7b1a613d98eedf9a8ba660",
+                "responses": {
+                    "200": {
+                        "description": "Mensaje de bienvenida",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Bienvenido a la API de Gestión de Vehículos - ICANH"
+                                        },
+                                        "version": {
+                                            "type": "string",
+                                            "example": "1.0.0"
+                                        },
+                                        "documentation": {
+                                            "type": "string",
+                                            "example": "/docs"
+                                        },
+                                        "redoc": {
+                                            "type": "string",
+                                            "example": "/redoc"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/health": {
+            "get": {
+                "tags": [
+                    "General"
+                ],
+                "summary": "Health Check",
+                "operationId": "e40ccc232e063ac5e1b4dedfbeea3079",
+                "responses": {
+                    "200": {
+                        "description": "Estado de salud de la API",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "healthy"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "API funcionando correctamente"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/marcas-vehiculo": {
+            "get": {
+                "tags": [
+                    "Marcas de Vehículo"
+                ],
+                "summary": "Obtener todas las marcas de vehículo",
+                "operationId": "a8da97f43bd8fa170f113ece7becaeba",
+                "parameters": [
+                    {
+                        "name": "skip",
+                        "in": "query",
+                        "description": "Número de registros a saltar (paginación)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 0
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Número máximo de registros a devolver",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 100
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de marcas de vehículo",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "nombre_marca": {
+                                                "type": "string",
+                                                "example": "Toyota"
+                                            },
+                                            "pais": {
+                                                "type": "string",
+                                                "example": "Japón"
+                                            },
+                                            "created_at": {
+                                                "type": "string",
+                                                "format": "date-time"
+                                            },
+                                            "updated_at": {
+                                                "type": "string",
+                                                "format": "date-time"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Marcas de Vehículo"
+                ],
+                "summary": "Crear una nueva marca de vehículo",
+                "operationId": "bd3a9ff8fa601e9802eafc759ed1da80",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nombre_marca",
+                                    "pais"
+                                ],
+                                "properties": {
+                                    "nombre_marca": {
+                                        "type": "string",
+                                        "minLength": 1,
+                                        "example": "Toyota"
+                                    },
+                                    "pais": {
+                                        "type": "string",
+                                        "minLength": 1,
+                                        "example": "Japón"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Marca creada exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "nombre_marca": {
+                                            "type": "string",
+                                            "example": "Toyota"
+                                        },
+                                        "pais": {
+                                            "type": "string",
+                                            "example": "Japón"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/marcas-vehiculo/{marca_vehiculo}": {
+            "get": {
+                "tags": [
+                    "Marcas de Vehículo"
+                ],
+                "summary": "Obtener una marca de vehículo por ID",
+                "operationId": "91c1b363bc1eb56184fd651074b6cdee",
+                "parameters": [
+                    {
+                        "name": "marca_vehiculo",
+                        "in": "path",
+                        "description": "ID de la marca",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Marca encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "nombre_marca": {
+                                            "type": "string",
+                                            "example": "Toyota"
+                                        },
+                                        "pais": {
+                                            "type": "string",
+                                            "example": "Japón"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Marca no encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Marca no encontrada"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Marcas de Vehículo"
+                ],
+                "summary": "Actualizar una marca de vehículo",
+                "operationId": "282a502aa72133139489b8a4d34ec000",
+                "parameters": [
+                    {
+                        "name": "marca_vehiculo",
+                        "in": "path",
+                        "description": "ID de la marca",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nombre_marca": {
+                                        "type": "string",
+                                        "minLength": 1,
+                                        "example": "Toyota Updated"
+                                    },
+                                    "pais": {
+                                        "type": "string",
+                                        "minLength": 1,
+                                        "example": "Japón Updated"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Marca actualizada exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "nombre_marca": {
+                                            "type": "string",
+                                            "example": "Toyota"
+                                        },
+                                        "pais": {
+                                            "type": "string",
+                                            "example": "Japón"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Marca no encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Marca no encontrada"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Marcas de Vehículo"
+                ],
+                "summary": "Eliminar una marca de vehículo",
+                "operationId": "4ea77ad65c67a0375433b3730f040984",
+                "parameters": [
+                    {
+                        "name": "marca_vehiculo",
+                        "in": "path",
+                        "description": "ID de la marca",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Marca eliminada exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Marca eliminada exitosamente"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "No se puede eliminar por tener vehículos asociados",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "No se puede eliminar la marca porque tiene vehículos asociados"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Marca no encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Marca no encontrada"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/personas": {
+            "get": {
+                "tags": [
+                    "Personas"
+                ],
+                "summary": "Obtener todas las personas",
+                "operationId": "84e537aeba1e2d52163ea10927e98430",
+                "parameters": [
+                    {
+                        "name": "skip",
+                        "in": "query",
+                        "description": "Número de registros a saltar (paginación)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 0
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Número máximo de registros a devolver",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 100
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de personas",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "nombre": {
+                                                "type": "string",
+                                                "example": "Juan Pérez"
+                                            },
+                                            "cedula": {
+                                                "type": "string",
+                                                "example": "123456789"
+                                            },
+                                            "created_at": {
+                                                "type": "string",
+                                                "format": "date-time"
+                                            },
+                                            "updated_at": {
+                                                "type": "string",
+                                                "format": "date-time"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Personas"
+                ],
+                "summary": "Crear una nueva persona",
+                "operationId": "9d6d475142411d09ace30132072dbeb7",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nombre",
+                                    "cedula"
+                                ],
+                                "properties": {
+                                    "nombre": {
+                                        "type": "string",
+                                        "minLength": 1,
+                                        "example": "Juan Pérez"
+                                    },
+                                    "cedula": {
+                                        "type": "string",
+                                        "minLength": 1,
+                                        "example": "123456789"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Persona creada exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "nombre": {
+                                            "type": "string",
+                                            "example": "Juan Pérez"
+                                        },
+                                        "cedula": {
+                                            "type": "string",
+                                            "example": "123456789"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/personas/{persona}": {
+            "get": {
+                "tags": [
+                    "Personas"
+                ],
+                "summary": "Obtener una persona por ID",
+                "operationId": "2f03eaa85a0cad80779868a1b35634ea",
+                "parameters": [
+                    {
+                        "name": "persona",
+                        "in": "path",
+                        "description": "ID de la persona",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Persona encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "nombre": {
+                                            "type": "string",
+                                            "example": "Juan Pérez"
+                                        },
+                                        "cedula": {
+                                            "type": "string",
+                                            "example": "123456789"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Persona no encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Persona no encontrada"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Personas"
+                ],
+                "summary": "Actualizar una persona",
+                "operationId": "b1a244d4ea2001faa482be69958334b2",
+                "parameters": [
+                    {
+                        "name": "persona",
+                        "in": "path",
+                        "description": "ID de la persona",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nombre": {
+                                        "type": "string",
+                                        "minLength": 1,
+                                        "example": "Juan Pérez Updated"
+                                    },
+                                    "cedula": {
+                                        "type": "string",
+                                        "minLength": 1,
+                                        "example": "987654321"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Persona actualizada exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "nombre": {
+                                            "type": "string",
+                                            "example": "Juan Pérez Updated"
+                                        },
+                                        "cedula": {
+                                            "type": "string",
+                                            "example": "987654321"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Persona no encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Persona no encontrada"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Personas"
+                ],
+                "summary": "Eliminar una persona",
+                "operationId": "bf783c1ea6d2d1438f1b93296a70d49f",
+                "parameters": [
+                    {
+                        "name": "persona",
+                        "in": "path",
+                        "description": "ID de la persona",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Persona eliminada exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Persona eliminada exitosamente"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "No se puede eliminar por tener vehículos asociados",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "No se puede eliminar la persona porque tiene vehículos asociados"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Persona no encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Persona no encontrada"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/personas/{persona}/vehiculos": {
+            "get": {
+                "tags": [
+                    "Personas"
+                ],
+                "summary": "Obtener vehículos de una persona",
+                "operationId": "780949301562f79b4e497a020120817e",
+                "parameters": [
+                    {
+                        "name": "persona",
+                        "in": "path",
+                        "description": "ID de la persona",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Vehículos de la persona",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "nombre": {
+                                            "type": "string",
+                                            "example": "Juan Pérez"
+                                        },
+                                        "cedula": {
+                                            "type": "string",
+                                            "example": "123456789"
+                                        },
+                                        "vehiculos": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "modelo": {
+                                                        "type": "string",
+                                                        "example": "Corolla"
+                                                    },
+                                                    "marca_id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "numero_puertas": {
+                                                        "type": "integer",
+                                                        "example": 4
+                                                    },
+                                                    "color": {
+                                                        "type": "string",
+                                                        "example": "Rojo"
+                                                    },
+                                                    "marca": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "nombre_marca": {
+                                                                "type": "string",
+                                                                "example": "Toyota"
+                                                            },
+                                                            "pais": {
+                                                                "type": "string",
+                                                                "example": "Japón"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Persona no encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Persona no encontrada"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/vehiculos": {
+            "get": {
+                "tags": [
+                    "Vehículos"
+                ],
+                "summary": "Obtener todos los vehículos",
+                "operationId": "d1c1283eaa4ad83a80774153daca729c",
+                "parameters": [
+                    {
+                        "name": "skip",
+                        "in": "query",
+                        "description": "Número de registros a saltar (paginación)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 0
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Número máximo de registros a devolver",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 100
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de vehículos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "modelo": {
+                                                "type": "string",
+                                                "example": "Corolla"
+                                            },
+                                            "marca_id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "numero_puertas": {
+                                                "type": "integer",
+                                                "example": 4
+                                            },
+                                            "color": {
+                                                "type": "string",
+                                                "example": "Rojo"
+                                            },
+                                            "created_at": {
+                                                "type": "string",
+                                                "format": "date-time"
+                                            },
+                                            "updated_at": {
+                                                "type": "string",
+                                                "format": "date-time"
+                                            },
+                                            "marca": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "nombre_marca": {
+                                                        "type": "string",
+                                                        "example": "Toyota"
+                                                    },
+                                                    "pais": {
+                                                        "type": "string",
+                                                        "example": "Japón"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Vehículos"
+                ],
+                "summary": "Crear un nuevo vehículo",
+                "operationId": "649560c59cbe82101a3bdcf03c7601bb",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "modelo",
+                                    "marca_id",
+                                    "numero_puertas",
+                                    "color"
+                                ],
+                                "properties": {
+                                    "modelo": {
+                                        "type": "string",
+                                        "minLength": 1,
+                                        "example": "Corolla"
+                                    },
+                                    "marca_id": {
+                                        "type": "integer",
+                                        "minimum": 1,
+                                        "example": 1
+                                    },
+                                    "numero_puertas": {
+                                        "type": "integer",
+                                        "maximum": 5,
+                                        "minimum": 2,
+                                        "example": 4
+                                    },
+                                    "color": {
+                                        "type": "string",
+                                        "minLength": 1,
+                                        "example": "Rojo"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Vehículo creado exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "modelo": {
+                                            "type": "string",
+                                            "example": "Corolla"
+                                        },
+                                        "marca_id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "numero_puertas": {
+                                            "type": "integer",
+                                            "example": 4
+                                        },
+                                        "color": {
+                                            "type": "string",
+                                            "example": "Rojo"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "marca": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "nombre_marca": {
+                                                    "type": "string",
+                                                    "example": "Toyota"
+                                                },
+                                                "pais": {
+                                                    "type": "string",
+                                                    "example": "Japón"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/vehiculos/{vehiculo}": {
+            "get": {
+                "tags": [
+                    "Vehículos"
+                ],
+                "summary": "Obtener un vehículo por ID",
+                "operationId": "6d52ebda3f933e52293bd032df34510d",
+                "parameters": [
+                    {
+                        "name": "vehiculo",
+                        "in": "path",
+                        "description": "ID del vehículo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Vehículo encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "modelo": {
+                                            "type": "string",
+                                            "example": "Corolla"
+                                        },
+                                        "marca_id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "numero_puertas": {
+                                            "type": "integer",
+                                            "example": 4
+                                        },
+                                        "color": {
+                                            "type": "string",
+                                            "example": "Rojo"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "marca": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "nombre_marca": {
+                                                    "type": "string",
+                                                    "example": "Toyota"
+                                                },
+                                                "pais": {
+                                                    "type": "string",
+                                                    "example": "Japón"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Vehículo no encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Vehículo no encontrado"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Vehículos"
+                ],
+                "summary": "Actualizar un vehículo",
+                "operationId": "6b4056fdacad02e16f330d2c1bd3fcab",
+                "parameters": [
+                    {
+                        "name": "vehiculo",
+                        "in": "path",
+                        "description": "ID del vehículo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "modelo": {
+                                        "type": "string",
+                                        "minLength": 1,
+                                        "example": "Corolla Updated"
+                                    },
+                                    "marca_id": {
+                                        "type": "integer",
+                                        "minimum": 1,
+                                        "example": 2
+                                    },
+                                    "numero_puertas": {
+                                        "type": "integer",
+                                        "maximum": 5,
+                                        "minimum": 2,
+                                        "example": 5
+                                    },
+                                    "color": {
+                                        "type": "string",
+                                        "minLength": 1,
+                                        "example": "Azul"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Vehículo actualizado exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "modelo": {
+                                            "type": "string",
+                                            "example": "Corolla Updated"
+                                        },
+                                        "marca_id": {
+                                            "type": "integer",
+                                            "example": 2
+                                        },
+                                        "numero_puertas": {
+                                            "type": "integer",
+                                            "example": 5
+                                        },
+                                        "color": {
+                                            "type": "string",
+                                            "example": "Azul"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "marca": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 2
+                                                },
+                                                "nombre_marca": {
+                                                    "type": "string",
+                                                    "example": "Honda"
+                                                },
+                                                "pais": {
+                                                    "type": "string",
+                                                    "example": "Japón"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Vehículo no encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Vehículo no encontrado"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Vehículos"
+                ],
+                "summary": "Eliminar un vehículo",
+                "operationId": "6b90d8a8d6521ab50f78990a74eda90d",
+                "parameters": [
+                    {
+                        "name": "vehiculo",
+                        "in": "path",
+                        "description": "ID del vehículo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Vehículo eliminado exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Vehículo eliminado exitosamente"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Vehículo no encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Vehículo no encontrado"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/vehiculos/{vehiculo}/propietarios": {
+            "get": {
+                "tags": [
+                    "Vehículos"
+                ],
+                "summary": "Obtener propietarios de un vehículo",
+                "operationId": "a5f5baefdf261a2b1cdf0bfcbc924906",
+                "parameters": [
+                    {
+                        "name": "vehiculo",
+                        "in": "path",
+                        "description": "ID del vehículo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Propietarios del vehículo",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "modelo": {
+                                            "type": "string",
+                                            "example": "Corolla"
+                                        },
+                                        "marca_id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "numero_puertas": {
+                                            "type": "integer",
+                                            "example": 4
+                                        },
+                                        "color": {
+                                            "type": "string",
+                                            "example": "Rojo"
+                                        },
+                                        "marca": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "nombre_marca": {
+                                                    "type": "string",
+                                                    "example": "Toyota"
+                                                },
+                                                "pais": {
+                                                    "type": "string",
+                                                    "example": "Japón"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "propietarios": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "nombre": {
+                                                        "type": "string",
+                                                        "example": "Juan Pérez"
+                                                    },
+                                                    "cedula": {
+                                                        "type": "string",
+                                                        "example": "123456789"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Vehículo no encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Vehículo no encontrado"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Vehículos"
+                ],
+                "summary": "Asignar propietario a un vehículo",
+                "operationId": "71137b22dc6c47205e0a79202e9bc020",
+                "parameters": [
+                    {
+                        "name": "vehiculo",
+                        "in": "path",
+                        "description": "ID del vehículo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "persona_id"
+                                ],
+                                "properties": {
+                                    "persona_id": {
+                                        "type": "integer",
+                                        "minimum": 1,
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Propietario asignado exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Propietario asignado exitosamente al vehículo"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "La persona ya es propietaria o error de validación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Esta persona ya es propietaria de este vehículo"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Vehículo o persona no encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Vehículo no encontrado"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Marcas de Vehículo",
+            "description": "Operaciones CRUD para marcas de vehículo"
+        },
+        {
+            "name": "Personas",
+            "description": "Operaciones CRUD para personas"
+        },
+        {
+            "name": "Vehículos",
+            "description": "Operaciones CRUD para vehículos"
+        },
+        {
+            "name": "General",
+            "description": "General"
+        }
+    ]
+}
