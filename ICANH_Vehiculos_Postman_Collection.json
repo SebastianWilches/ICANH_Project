@@ -1,0 +1,400 @@
+{
+  "info": {
+    "name": "API Gestión de Vehículos - ICANH",
+    "description": "Colección completa de endpoints para la API RESTful de gestión de vehículos, marcas, personas y sus relaciones. Proyecto desarrollado con FastAPI y SQLite.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "icanh-api"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "General",
+      "item": [
+        {
+          "name": "Bienvenida",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/",
+              "host": ["{{base_url}}"],
+              "path": [""]
+            },
+            "description": "Endpoint de bienvenida que retorna información básica sobre la API"
+          }
+        },
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/health",
+              "host": ["{{base_url}}"],
+              "path": ["health"]
+            },
+            "description": "Verificar el estado de funcionamiento de la API"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Marcas de Vehículo",
+      "item": [
+        {
+          "name": "Obtener todas las marcas",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/marcas-vehiculo/?skip=0&limit=100",
+              "host": ["{{base_url}}"],
+              "path": ["api", "marcas-vehiculo", ""],
+              "query": [
+                {
+                  "key": "skip",
+                  "value": "0",
+                  "description": "Número de registros a saltar"
+                },
+                {
+                  "key": "limit",
+                  "value": "100",
+                  "description": "Número máximo de registros a devolver"
+                }
+              ]
+            },
+            "description": "Obtener una lista paginada de todas las marcas de vehículo"
+          }
+        },
+        {
+          "name": "Crear nueva marca",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre_marca\": \"Toyota\",\n  \"pais\": \"Japón\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/marcas-vehiculo/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "marcas-vehiculo", ""]
+            },
+            "description": "Crear una nueva marca de vehículo. El nombre debe ser único."
+          }
+        },
+        {
+          "name": "Obtener marca por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/marcas-vehiculo/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "marcas-vehiculo", "1"]
+            },
+            "description": "Obtener una marca específica por su ID"
+          }
+        },
+        {
+          "name": "Actualizar marca",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre_marca\": \"Toyota Updated\",\n  \"pais\": \"Japón\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/marcas-vehiculo/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "marcas-vehiculo", "1"]
+            },
+            "description": "Actualizar una marca existente. Solo se actualizan los campos proporcionados."
+          }
+        },
+        {
+          "name": "Eliminar marca",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/marcas-vehiculo/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "marcas-vehiculo", "1"]
+            },
+            "description": "Eliminar una marca. No se puede eliminar si tiene vehículos asociados."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Personas",
+      "item": [
+        {
+          "name": "Obtener todas las personas",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/personas/?skip=0&limit=100",
+              "host": ["{{base_url}}"],
+              "path": ["api", "personas", ""],
+              "query": [
+                {
+                  "key": "skip",
+                  "value": "0"
+                },
+                {
+                  "key": "limit",
+                  "value": "100"
+                }
+              ]
+            },
+            "description": "Obtener una lista paginada de todas las personas"
+          }
+        },
+        {
+          "name": "Crear nueva persona",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Juan Pérez\",\n  \"cedula\": \"123456789\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/personas/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "personas", ""]
+            },
+            "description": "Crear una nueva persona. La cédula debe ser única."
+          }
+        },
+        {
+          "name": "Obtener persona por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/personas/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "personas", "1"]
+            },
+            "description": "Obtener una persona específica por su ID"
+          }
+        },
+        {
+          "name": "Actualizar persona",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Juan Pérez Actualizado\",\n  \"cedula\": \"123456789\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/personas/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "personas", "1"]
+            },
+            "description": "Actualizar una persona existente. Solo se actualizan los campos proporcionados."
+          }
+        },
+        {
+          "name": "Eliminar persona",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/personas/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "personas", "1"]
+            },
+            "description": "Eliminar una persona. No se puede eliminar si tiene vehículos asociados."
+          }
+        },
+        {
+          "name": "Obtener vehículos de una persona",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/personas/1/vehiculos/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "personas", "1", "vehiculos", ""]
+            },
+            "description": "Obtener todos los vehículos asociados a una persona específica"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Vehículos",
+      "item": [
+        {
+          "name": "Obtener todos los vehículos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/vehiculos/?skip=0&limit=100",
+              "host": ["{{base_url}}"],
+              "path": ["api", "vehiculos", ""],
+              "query": [
+                {
+                  "key": "skip",
+                  "value": "0"
+                },
+                {
+                  "key": "limit",
+                  "value": "100"
+                }
+              ]
+            },
+            "description": "Obtener una lista paginada de todos los vehículos con información de su marca"
+          }
+        },
+        {
+          "name": "Crear nuevo vehículo",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"modelo\": \"Corolla\",\n  \"marca_id\": 1,\n  \"numero_puertas\": 4,\n  \"color\": \"Rojo\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/vehiculos/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "vehiculos", ""]
+            },
+            "description": "Crear un nuevo vehículo. La marca_id debe existir en la base de datos."
+          }
+        },
+        {
+          "name": "Obtener vehículo por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/vehiculos/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "vehiculos", "1"]
+            },
+            "description": "Obtener un vehículo específico por su ID con información de su marca"
+          }
+        },
+        {
+          "name": "Actualizar vehículo",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"modelo\": \"Corolla Updated\",\n  \"marca_id\": 1,\n  \"numero_puertas\": 4,\n  \"color\": \"Azul\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/vehiculos/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "vehiculos", "1"]
+            },
+            "description": "Actualizar un vehículo existente. Solo se actualizan los campos proporcionados."
+          }
+        },
+        {
+          "name": "Eliminar vehículo",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/vehiculos/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "vehiculos", "1"]
+            },
+            "description": "Eliminar un vehículo"
+          }
+        },
+        {
+          "name": "Obtener propietarios de un vehículo",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/vehiculos/1/propietarios/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "vehiculos", "1", "propietarios", ""]
+            },
+            "description": "Obtener todos los propietarios de un vehículo específico"
+          }
+        },
+        {
+          "name": "Asignar propietario a vehículo",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"persona_id\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/vehiculos/1/propietarios/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "vehiculos", "1", "propietarios", ""]
+            },
+            "description": "Asignar un propietario a un vehículo. Ambos deben existir y la relación no debe existir previamente."
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "type": "string",
+      "description": "URL base de la API. Cambiar según el puerto donde se ejecute la aplicación."
+    }
+  ]
+}
