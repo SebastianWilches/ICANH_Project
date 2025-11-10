@@ -220,6 +220,126 @@ El proyecto utiliza variables de entorno para una configuración flexible:
 - `LOG_LEVEL`: Nivel de logging (INFO, DEBUG, WARNING, ERROR)
 - `LOG_FORMAT`: Formato de logs
 
+## 🧪 Testing - Pruebas Automatizadas
+
+El proyecto incluye un conjunto completo de pruebas automatizadas usando **pytest**.
+
+### 📦 Dependencias de Testing
+
+- **pytest**: Framework de testing
+- **pytest-asyncio**: Soporte para async/await
+- **pytest-cov**: Reportes de cobertura
+- **httpx**: Cliente HTTP para tests de API
+- **faker**: Generador de datos de prueba
+
+### 🚀 Ejecutar Pruebas
+
+#### Opción 1: Script automático (recomendado)
+```bash
+python run_tests.py
+```
+
+#### Opción 2: Ejecutar manualmente
+```bash
+# Todas las pruebas
+pytest
+
+# Tests específicos
+pytest tests/test_models.py -v
+pytest tests/test_routes.py -v
+pytest tests/test_integration.py -v
+
+# Con cobertura
+pytest --cov=app --cov-report=html
+```
+
+#### Opción 3: Tests rápidos durante desarrollo
+```bash
+# Tests unitarios solo
+pytest tests/test_models.py tests/test_schemas.py -v
+
+# Tests de API solo
+pytest tests/test_routes.py -v
+```
+
+### 📊 Cobertura de Código
+
+Las pruebas cubren:
+- ✅ **Modelos SQLAlchemy** (constraints, relaciones)
+- ✅ **Esquemas Pydantic** (validación, serialización)
+- ✅ **Endpoints REST** (CRUD completo + relaciones)
+- ✅ **Flujos de integración** (ciclos completos)
+- ✅ **Manejo de errores** (validaciones, casos edge)
+
+**Cobertura objetivo**: >80%
+
+### 🏗️ Estructura de Tests
+
+```
+tests/
+├── __init__.py
+├── conftest.py              # Fixtures y configuración
+├── test_models.py           # Tests de modelos SQLAlchemy
+├── test_schemas.py          # Tests de esquemas Pydantic
+├── test_routes.py           # Tests de endpoints REST
+└── test_integration.py      # Tests de flujos completos
+```
+
+### 🔧 Fixtures Disponibles
+
+- `db_session`: Sesión limpia de base de datos por test
+- `client`: Cliente FastAPI para tests HTTP
+- `sample_marca/persona/vehiculo`: Datos de prueba individuales
+- `multiple_*`: Colecciones de datos para tests masivos
+- `faker`: Generador de datos falsos
+
+### 📝 Ejemplos de Tests
+
+#### Test Unitario (Modelo)
+```python
+def test_create_marca_vehiculo(db_session, faker):
+    marca = MarcaVehiculo(
+        nombre_marca=faker.company(),
+        pais=faker.country()
+    )
+    db_session.add(marca)
+    db_session.commit()
+
+    assert marca.id is not None
+    assert marca.nombre_marca is not None
+```
+
+#### Test de API (Endpoint)
+```python
+def test_create_marca_vehiculo(client, faker):
+    marca_data = {
+        "nombre_marca": faker.company(),
+        "pais": faker.country()
+    }
+
+    response = client.post("/api/marcas-vehiculo/", json=marca_data)
+    assert response.status_code == 200
+
+    data = response.json()
+    assert data["nombre_marca"] == marca_data["nombre_marca"]
+```
+
+#### Test de Integración
+```python
+def test_complete_vehiculo_lifecycle(self, client, faker):
+    # Crear marca → Crear vehículo → Actualizar → Eliminar
+    # Verifica el flujo completo
+```
+
+### 🎯 Mejores Prácticas Implementadas
+
+- **Base de datos aislada**: Cada test usa una DB SQLite separada
+- **Fixtures reutilizables**: Datos de prueba consistentes
+- **Limpieza automática**: DB se recrea entre tests
+- **Paralelización**: Tests pueden ejecutarse en paralelo
+- **Marcadores**: Tests categorizados (unit, integration)
+- **Reportes HTML**: Cobertura visual en `htmlcov/index.html`
+
 ## 🛑 Comandos Útiles
 
 ### Activar entorno virtual
