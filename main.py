@@ -1,13 +1,18 @@
+import os
+from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.database.database import create_tables
 from app.routes import marca_vehiculo, persona, vehiculo
 
-# Crear la aplicación FastAPI
+# Cargar variables de entorno
+load_dotenv()
+
+# Crear la aplicación FastAPI con configuración desde variables de entorno
 app = FastAPI(
-    title="API de Gestión de Vehículos - ICANH",
-    description="""
+    title=os.getenv("APP_TITLE", "API de Gestión de Vehículos - ICANH"),
+    description=os.getenv("APP_DESCRIPTION", """
     API RESTful para la gestión de vehículos, marcas, personas y sus relaciones.
 
     ## Características principales:
@@ -42,24 +47,33 @@ app = FastAPI(
     - `DELETE /api/vehiculos/{id}` - Eliminar vehículo
     - `GET /api/vehiculos/{id}/propietarios/` - Obtener propietarios de un vehículo
     - `POST /api/vehiculos/{id}/propietarios/` - Asignar propietario a vehículo
-    """,
-    version="1.0.0",
+    """),
+    version=os.getenv("APP_VERSION", "1.0.0"),
     contact={
-        "name": "Instituto Colombiano de Antropología e Historia (ICANH)",
-        "email": "info@icanh.gov.co",
+        "name": os.getenv("APP_CONTACT_NAME", "Instituto Colombiano de Antropología e Historia (ICANH)"),
+        "email": os.getenv("APP_CONTACT_EMAIL", "info@icanh.gov.co"),
     },
     license_info={
         "name": "MIT",
     },
 )
 
-# Configurar CORS
+# Configurar CORS con variables de entorno
+allow_origins = os.getenv("ALLOW_ORIGINS", "*")
+if isinstance(allow_origins, str) and allow_origins != "*":
+    # Si es una lista en formato string, convertirla a lista
+    import ast
+    try:
+        allow_origins = ast.literal_eval(allow_origins)
+    except (ValueError, SyntaxError):
+        allow_origins = [allow_origins]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # En producción, especificar los orígenes permitidos
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins=allow_origins if isinstance(allow_origins, list) else [allow_origins],
+    allow_credentials=os.getenv("ALLOW_CREDENTIALS", "True").lower() == "true",
+    allow_methods=os.getenv("ALLOW_METHODS", "*").split(",") if os.getenv("ALLOW_METHODS", "*") != "*" else ["*"],
+    allow_headers=os.getenv("ALLOW_HEADERS", "*").split(",") if os.getenv("ALLOW_HEADERS", "*") != "*" else ["*"],
 )
 
 # Incluir routers

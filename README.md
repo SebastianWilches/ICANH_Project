@@ -76,38 +76,162 @@ ICANH_Project/
 - Python 3.8+
 - pip (gestor de paquetes de Python)
 
-## 🛠️ Instalación
+## 🛠️ Instalación y Configuración
 
-1. **Clonar o descargar el proyecto**
-   ```bash
-   # Si es un repositorio
-   git clone <url-del-repositorio>
-   cd ICANH_Project
-   ```
+### 1. Clonar o descargar el proyecto
+```bash
+# Si es un repositorio
+git clone <url-del-repositorio>
+cd ICANH_Project
+```
 
-2. **Crear entorno virtual (recomendado)**
-   ```bash
-   python -m venv venv
-   # En Windows
-   venv\Scripts\activate
-   # En Linux/Mac
-   source venv/bin/activate
-   ```
+### 2. Configurar entorno virtual (venv)
 
-3. **Instalar dependencias**
-   ```bash
-   pip install -r requirements.txt
-   ```
+#### En Windows:
+```powershell
+# Crear entorno virtual
+python -m venv venv
 
-4. **Ejecutar la aplicación**
-   ```bash
-   uvicorn main:app --reload
-   ```
+# Activar entorno virtual
+venv\Scripts\activate
+```
 
-5. **Verificar funcionamiento**
-   - Abrir navegador en: `http://localhost:8000`
-   - Documentación Swagger: `http://localhost:8000/docs`
-   - Documentación ReDoc: `http://localhost:8000/redoc`
+#### En Linux/Mac:
+```bash
+# Crear entorno virtual
+python -m venv venv
+
+# Activar entorno virtual
+source venv/bin/activate
+```
+
+**Nota**: El entorno virtual aparecerá con `(venv)` al inicio de la línea de comandos cuando esté activado.
+
+### 3. Instalar dependencias
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Configurar variables de entorno
+
+#### Opción A: Usar archivo .env (recomendado)
+El proyecto incluye un archivo `.env.example` con todas las configuraciones posibles.
+```bash
+# Copiar el archivo de ejemplo
+cp .env.example .env
+
+# O en Windows:
+copy .env.example .env
+```
+
+Edita el archivo `.env` según tus necesidades. Las configuraciones principales son:
+
+```env
+# Base de datos
+DATABASE_URL=sqlite:///./vehiculos.db
+
+# Configuración del servidor
+HOST=0.0.0.0
+PORT=8000
+RELOAD=True
+
+# Configuración de la aplicación
+APP_TITLE=API de Gestión de Vehículos - ICANH
+APP_VERSION=1.0.0
+```
+
+#### Opción B: Variables de entorno del sistema
+Puedes configurar las variables directamente en tu sistema operativo o usar valores por defecto.
+
+### 5. Ejecutar la aplicación
+
+#### Opción A: Usando el script run.py (recomendado)
+```bash
+python run.py
+```
+
+#### Opción B: Usando uvicorn directamente
+```bash
+# Ejecutar con configuración por defecto
+uvicorn main:app --reload
+
+# Ejecutar con puerto personalizado
+uvicorn main:app --host 0.0.0.0 --port 8080 --reload
+```
+
+### 6. Verificar funcionamiento
+- **API**: `http://localhost:8000`
+- **Documentación Swagger**: `http://localhost:8000/docs`
+- **Documentación ReDoc**: `http://localhost:8000/redoc`
+- **Health Check**: `http://localhost:8000/health`
+
+## 🌍 Variables de Entorno
+
+El proyecto utiliza variables de entorno para una configuración flexible:
+
+### Base de Datos
+- `DATABASE_URL`: URL de conexión a la base de datos (por defecto: SQLite local)
+
+### Aplicación
+- `APP_TITLE`: Título de la API
+- `APP_DESCRIPTION`: Descripción de la API
+- `APP_VERSION`: Versión de la API
+- `APP_CONTACT_NAME`: Nombre del contacto
+- `APP_CONTACT_EMAIL`: Email del contacto
+
+### Servidor
+- `HOST`: Host del servidor (por defecto: 0.0.0.0)
+- `PORT`: Puerto del servidor (por defecto: 8000)
+- `RELOAD`: Recarga automática en desarrollo (por defecto: True)
+
+### Desarrollo
+- `DEBUG`: Modo debug (por defecto: True)
+- `ENVIRONMENT`: Entorno de ejecución (por defecto: development)
+
+### CORS
+- `ALLOW_ORIGINS`: Orígenes permitidos (lista o "*")
+- `ALLOW_CREDENTIALS`: Permitir credenciales (True/False)
+- `ALLOW_METHODS`: Métodos HTTP permitidos
+- `ALLOW_HEADERS`: Headers permitidos
+
+### Logging
+- `LOG_LEVEL`: Nivel de logging (INFO, DEBUG, WARNING, ERROR)
+- `LOG_FORMAT`: Formato de logs
+
+## 🛑 Comandos Útiles
+
+### Activar entorno virtual
+```bash
+# Windows
+venv\Scripts\activate
+
+# Linux/Mac
+source venv/bin/activate
+```
+
+### Desactivar entorno virtual
+```bash
+deactivate
+```
+
+### Actualizar dependencias
+```bash
+pip install -r requirements.txt --upgrade
+```
+
+### Ver paquetes instalados
+```bash
+pip list
+```
+
+### Ejecutar en modo producción
+```bash
+# Desactivar reload para producción
+RELOAD=False python run.py
+
+# O usando uvicorn directamente
+uvicorn main:app --host 0.0.0.0 --port 8000
+```
 
 ## 📚 API Endpoints
 
@@ -248,6 +372,7 @@ uvicorn main:app --host 0.0.0.0 --port 8080 --reload
 - **SQLAlchemy**: ORM para Python
 - **Pydantic**: Validación de datos
 - **Uvicorn**: Servidor ASGI
+- **python-dotenv**: Gestión de variables de entorno
 
 ### Arquitectura
 - **Routers modularizados** por entidad
