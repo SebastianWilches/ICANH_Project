@@ -17,33 +17,53 @@ API RESTful desarrollada con FastAPI y SQLite para la gestión de vehículos, ma
 ```mermaid
 erDiagram
     MarcaVehiculo ||--o{ Vehiculo : "tiene"
-    Persona }o--o{ Vehiculo : "propietarios"
+    Persona ||--o{ Vehiculo_Persona : "posee"
+    Vehiculo ||--o{ Vehiculo_Persona : "es_poseido_por"
 
     MarcaVehiculo {
         integer id PK
-        string nombre_marca UK
-        string pais
+        string nombre_marca UK "Nombre único de la marca"
+        string pais "País de origen"
     }
 
     Persona {
         integer id PK
-        string nombre
-        string cedula UK
+        string nombre "Nombre completo"
+        string cedula UK "Cédula única"
     }
 
     Vehiculo {
         integer id PK
-        string modelo
-        integer marca_id FK
-        integer numero_puertas
-        string color
+        string modelo "Modelo del vehículo"
+        integer marca_id FK "Referencia a MarcaVehiculo"
+        integer numero_puertas "Número de puertas"
+        string color "Color del vehículo"
     }
 
     Vehiculo_Persona {
-        integer vehiculo_id FK
-        integer persona_id FK
+        integer vehiculo_id FK "Referencia a Vehiculo"
+        integer persona_id FK "Referencia a Persona"
+        PRIMARY KEY(vehiculo_id, persona_id) "Clave compuesta"
     }
 ```
+
+### 📋 Relaciones Normalizadas
+
+- **MarcaVehiculo → Vehiculo**: Relación **One-to-Many**
+  - Una marca puede tener múltiples vehículos
+  - Cada vehículo pertenece a una sola marca
+
+- **Persona → Vehiculo_Persona**: Relación **One-to-Many**
+  - Una persona puede tener múltiples registros en vehiculo_persona
+  - Cada registro vehiculo_persona pertenece a una sola persona
+
+- **Vehiculo → Vehiculo_Persona**: Relación **One-to-Many**
+  - Un vehículo puede tener múltiples registros en vehiculo_persona
+  - Cada registro vehiculo_persona pertenece a un solo vehículo
+
+La tabla `Vehiculo_Persona` implementa la relación **Many-to-Many** entre `Persona` y `Vehiculo` mediante normalización, permitiendo que:
+- Una **persona** pueda tener **múltiples vehículos**
+- Un **vehículo** pueda tener **múltiples propietarios**
 
 ## 🏗️ Estructura del Proyecto
 
@@ -234,6 +254,35 @@ RELOAD=False python run.py
 # O usando uvicorn directamente
 uvicorn main:app --host 0.0.0.0 --port 8000
 ```
+
+### Reiniciar la Base de Datos
+```bash
+# Opción 1: Borrar el archivo de base de datos
+rm vehiculos.db
+# En Windows:
+# del vehiculos.db
+
+# Opción 2: Ejecutar la aplicación (las tablas se recrean automáticamente)
+python run.py
+```
+
+**Nota**: Al reiniciar la aplicación, SQLAlchemy detecta que las tablas no existen y las crea automáticamente gracias al evento `startup` en `main.py`.
+
+## 🐛 Problemas Conocidos y Soluciones
+
+### Error en Endpoint `/api/personas/{id}/vehiculos`
+**Problema**: `sqlalchemy.exc.ArgumentError: Strings are not accepted for attribute names in loader options`
+
+**Solución**: SQLAlchemy requiere el uso de atributos de clase en lugar de strings en `joinedload()`. Se cambió:
+```python
+# ❌ Incorrecto
+joinedload(PersonaModel.vehiculos).joinedload('marca')
+
+# ✅ Correcto
+joinedload(PersonaModel.vehiculos).joinedload(Vehiculo.marca)
+```
+
+**Estado**: ✅ **Solucionado** en la versión actual del código.
 
 ## 📚 API Endpoints
 
