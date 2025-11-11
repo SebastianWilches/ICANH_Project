@@ -41,9 +41,8 @@ erDiagram
     }
 
     Vehiculo_Persona {
-        integer vehiculo_id FK "Referencia a Vehiculo"
-        integer persona_id FK "Referencia a Persona"
-        PRIMARY KEY(vehiculo_id, persona_id) "Clave compuesta"
+        integer vehiculo_id FK "Referencia a Vehiculo" PK
+        integer persona_id FK "Referencia a Persona" PK "Clave compuesta"
     }
 ```
 
