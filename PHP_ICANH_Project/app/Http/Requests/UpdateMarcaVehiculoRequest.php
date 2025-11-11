@@ -21,7 +21,7 @@ class UpdateMarcaVehiculoRequest extends FormRequest
      */
     public function rules(): array
     {
-        $marcaId = $this->route('marca_vehiculo');
+        $marcaId = $this->route('marca_vehiculo')->id;
 
         return [
             'nombre_marca' => 'sometimes|string|min:1|unique:marca_vehiculo,nombre_marca,' . $marcaId,

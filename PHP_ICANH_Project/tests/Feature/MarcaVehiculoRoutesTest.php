@@ -11,6 +11,14 @@ class MarcaVehiculoRoutesTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // Para tests de API, deshabilitar middlewares que puedan interferir
+        // $this->withoutMiddleware();
+    }
+
     public function test_get_marcas_empty()
     {
         $response = $this->get('/api/marcas-vehiculo/');
@@ -26,7 +34,7 @@ class MarcaVehiculoRoutesTest extends TestCase
             'pais' => 'Japón'
         ];
 
-        $response = $this->post('/api/marcas-vehiculo/', $marcaData);
+        $response = $this->postJson('/api/marcas-vehiculo/', $marcaData);
 
         $response->assertStatus(201)
                 ->assertJson([
@@ -39,13 +47,13 @@ class MarcaVehiculoRoutesTest extends TestCase
     public function test_create_marca_duplicate_name()
     {
         // Crear primera marca
-        $this->post('/api/marcas-vehiculo/', [
+        $this->postJson('/api/marcas-vehiculo/', [
             'nombre_marca' => 'Toyota',
             'pais' => 'Japón'
         ]);
 
         // Intentar crear segunda marca con mismo nombre
-        $response = $this->post('/api/marcas-vehiculo/', [
+        $response = $this->postJson('/api/marcas-vehiculo/', [
             'nombre_marca' => 'Toyota',
             'pais' => 'Corea'
         ]);
@@ -84,7 +92,7 @@ class MarcaVehiculoRoutesTest extends TestCase
             'pais' => 'Japón Updated'
         ];
 
-        $response = $this->put("/api/marcas-vehiculo/{$marca->id}", $updateData);
+        $response = $this->putJson("/api/marcas-vehiculo/{$marca->id}", $updateData);
 
         $response->assertStatus(200)
                 ->assertJson([
@@ -99,7 +107,7 @@ class MarcaVehiculoRoutesTest extends TestCase
 
         $updateData = ['pais' => 'Japón Updated'];
 
-        $response = $this->put("/api/marcas-vehiculo/{$marca->id}", $updateData);
+        $response = $this->putJson("/api/marcas-vehiculo/{$marca->id}", $updateData);
 
         $response->assertStatus(200)
                 ->assertJson([

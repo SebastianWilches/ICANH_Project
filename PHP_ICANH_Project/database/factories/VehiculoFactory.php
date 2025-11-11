@@ -17,7 +17,7 @@ class VehiculoFactory extends Factory
     public function definition(): array
     {
         return [
-            'modelo' => $this->faker->word()->ucfirst(),
+            'modelo' => ucfirst($this->faker->word()),
             'marca_id' => \App\Models\MarcaVehiculo::factory(),
             'numero_puertas' => $this->faker->numberBetween(2, 5),
             'color' => $this->faker->colorName(),
