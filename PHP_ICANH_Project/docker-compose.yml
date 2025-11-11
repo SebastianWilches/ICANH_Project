@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  icanh-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: icanh-laravel-api
+    ports:
+      - "8080:80"
+    volumes:
+      - ./storage:/var/www/html/storage
+      - ./database:/var/www/html/database
+    environment:
+      - APP_NAME="API de Gestión de Vehículos - ICANH"
+      - APP_ENV=production
+      - APP_DEBUG=false
+      - APP_URL=http://localhost:8080
+      - DB_CONNECTION=sqlite
+      - DB_DATABASE=/var/www/html/database/database.sqlite
+      - LOG_CHANNEL=stack
+      - CACHE_DRIVER=file
+      - QUEUE_CONNECTION=sync
+      - SESSION_DRIVER=file
+    networks:
+      - icanh-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  icanh-network:
+    driver: bridge
+
+volumes:
+  laravel-storage:
+    driver: local
+  laravel-database:
+    driver: local
+

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\MarcaVehiculo;
-use App\Http\Requests\StoreMarcaVehiculoRequest;
+// use App\Http\Requests\StoreMarcaVehiculoRequest;
 use App\Http\Requests\UpdateMarcaVehiculoRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -97,11 +97,29 @@ class MarcaVehiculoController extends Controller
      *     )
      * )
      */
-    public function store(StoreMarcaVehiculoRequest $request): JsonResponse
+    public function store(Request $request): JsonResponse
     {
-        $marca = MarcaVehiculo::create($request->validated());
+        // Debug temporal
+        return response()->json([
+            'debug_request_all' => $request->all(),
+            'debug_request_content' => $request->getContent(),
+            'debug_headers' => [
+                'content_type' => $request->header('Content-Type'),
+                'accept' => $request->header('Accept'),
+            ],
+            'debug_method' => $request->method(),
+            'debug_is_json' => $request->isJson(),
+            'debug_wants_json' => $request->wantsJson(),
+        ]);
 
-        return response()->json($marca, 201);
+        // Validación manual
+        // $validated = $request->validate([
+        //     'nombre_marca' => 'required|string|min:1|unique:marca_vehiculo,nombre_marca',
+        //     'pais' => 'required|string|min:1'
+        // ]);
+
+        // $marca = MarcaVehiculo::create($validated);
+        // return response()->json($marca, 201);
     }
 
     /**
