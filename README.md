@@ -49,8 +49,8 @@ erDiagram
     }
 
     Vehiculo_Persona {
-        integer vehiculo_id PK FK
-        integer persona_id PK FK
+        integer vehiculo_id FK
+        integer persona_id FK
     }
 ```
 
