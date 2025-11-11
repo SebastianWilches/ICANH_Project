@@ -41,11 +41,12 @@ erDiagram
     }
 
     Vehiculo_Persona {
-        integer vehiculo_id FK "Referencia a Vehiculo"
-        integer persona_id FK "Referencia a Persona"
-        PRIMARY KEY(vehiculo_id, persona_id) "Clave compuesta"
+        integer vehiculo_id FK
+        integer persona_id FK
     }
 ```
+
+La tabla `Vehiculo_Persona` implementa la relación **Many-to-Many** entre `Persona` y `Vehiculo` mediante normalización con una **clave primaria compuesta** (vehiculo_id, persona_id).
 
 ## 🏗️ Estructura del Proyecto
 

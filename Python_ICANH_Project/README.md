@@ -43,9 +43,8 @@ erDiagram
     }
 
     Vehiculo_Persona {
-        integer vehiculo_id FK "Referencia a Vehiculo"
-        integer persona_id FK "Referencia a Persona"
-        PRIMARY KEY(vehiculo_id, persona_id) "Clave compuesta"
+        integer vehiculo_id FK
+        integer persona_id FK
     }
 ```
 
@@ -63,7 +62,7 @@ erDiagram
   - Un vehículo puede tener múltiples registros en vehiculo_persona
   - Cada registro vehiculo_persona pertenece a un solo vehículo
 
-La tabla `Vehiculo_Persona` implementa la relación **Many-to-Many** entre `Persona` y `Vehiculo` mediante normalización, permitiendo que:
+La tabla `Vehiculo_Persona` implementa la relación **Many-to-Many** entre `Persona` y `Vehiculo` mediante normalización con una **clave primaria compuesta** (vehiculo_id, persona_id), permitiendo que:
 - Una **persona** pueda tener **múltiples vehículos**
 - Un **vehículo** pueda tener **múltiples propietarios**
 
